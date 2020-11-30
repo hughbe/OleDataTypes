@@ -14,8 +14,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/hughbe/DataStream", from: "2.0.0"),
-        //.package(url: "https://github.com/hughbe/MetafileReader", from: "1.0.0"),
-        .package(path: "../MetafileReader"),
+        .package(url: "https://github.com/hughbe/MetafileReader", from: "1.0.0"),
         .package(url: "https://github.com/hughbe/WindowsDataTypes", from: "1.0.0"),
     ],
     targets: [
