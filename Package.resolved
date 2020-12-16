@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "MetafileReader",
-        "repositoryURL": "https://github.com/hughbe/MetafileReader",
-        "state": {
-          "branch": null,
-          "revision": "2fc1d9bde90b211b0830d5b616c69ef8ecea0121",
-          "version": "1.0.1"
-        }
-      },
-      {
         "package": "BitField",
         "repositoryURL": "https://github.com/hughbe/SwiftBitField",
         "state": {
@@ -35,6 +26,15 @@
           "branch": null,
           "revision": "2d0efa7a0fbdb3eae9ff99456cb864382b883f4d",
           "version": "1.0.10"
+        }
+      },
+      {
+        "package": "WmfReader",
+        "repositoryURL": "https://github.com/hughbe/WmfReader",
+        "state": {
+          "branch": null,
+          "revision": "fd5d5e67c231b6c9ff2d5b178f745c3e5a0bcdb7",
+          "version": "1.0.3"
         }
       }
     ]

@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/hughbe/DataStream", from: "2.0.0"),
-        .package(url: "https://github.com/hughbe/MetafileReader", from: "1.0.0"),
+        .package(url: "https://github.com/hughbe/WmfReader", from: "1.0.0"),
         .package(url: "https://github.com/hughbe/WindowsDataTypes", from: "1.0.0"),
     ],
     targets: [
@@ -22,7 +22,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "OleDataTypes",
-            dependencies: ["DataStream", "MetafileReader", "WindowsDataTypes"]),
+            dependencies: ["DataStream", "WmfReader", "WindowsDataTypes"]),
         .testTarget(
             name: "OleDataTypesTests",
             dependencies: ["OleDataTypes"]),

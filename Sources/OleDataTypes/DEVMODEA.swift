@@ -1,6 +1,6 @@
 //
 //  DEVMODEA.swift
-//  
+//
 //
 //  Created by Hugh Bellamy on 25/11/2020.
 //
@@ -35,7 +35,7 @@ public struct DEVMODEA {
     public let reserved1: UInt32
     public let reserved2: UInt32
     public let reserved3: UInt32
-    public let dmNup: UInt16?
+    public let dmNup: UInt32?
     public let reserved4: UInt32
     public let dmICMMethod: UInt32?
     public let dmICMIntent: UInt32?
@@ -45,32 +45,32 @@ public struct DEVMODEA {
     public let reserved6: UInt32
     public let reserved7: UInt32
     public let reserved8: UInt32
-    
+
     public init(dataStream: inout DataStream) throws {
         /// dmDeviceName (32 bytes): This field is a 32-element array of 8-bit ANSI characters.
         self.dmDeviceName = try dataStream.readString(count: 32, encoding: .ascii)!.trimmingCharacters(in: ["\0"])
-        
+
         /// dmFormName (32 bytes): This field is a 32-element array of 8-bit ANSI characters.
         self.dmFormName = try dataStream.readString(count: 32, encoding: .ascii)!.trimmingCharacters(in: ["\0"])
-        
+
         /// dmSpecVersion (2 bytes): The version of initialization data specification on which the DEVMODE structure is based.
         self.dmSpecVersion = try dataStream.read(endianess: .littleEndian)
-        
+
         /// dmDriverVersion (2 bytes): For printers, an optional, implementation-defined version of the printer driver.
         self.dmDriverVersion = try dataStream.read(endianess: .littleEndian)
-        
+
         /// dmSize (2 bytes): The size, in bytes, of the DEVMODE structure. The size MUST NOT include the length of any private, printer
         /// driver–specific data that might follow the DEVMODE structure's public fields.
         self.dmSize = try dataStream.read(endianess: .littleEndian)
-        
+
         /// dmDriverExtra (2 bytes): The size, in bytes, of the private printer driver data that follows this structure.
         self.dmDriverExtra = try dataStream.read(endianess: .littleEndian)
-        
+
         /// dmFields (4 bytes): A bitfield that specifies the fields of the DEVMODE structure that have been initialized. If a bit is set, the
         /// corresponding field MUST be initialized and MUST be processed on receipt. If a bit is not set, the value of the corresponding
         /// field SHOULD be set to zero and MUST be ignored on receipt.
         self.dmFields = Fields(rawValue: try dataStream.read(endianess: .littleEndian))
-        
+
         /// dmOrientation (2 bytes): For printers, the orientation for output. If the DM_ORIENTATION bit is set in dmFields, this value
         /// MUST be specified.
         if self.dmFields.contains(.orientation) {
@@ -78,7 +78,7 @@ public struct DEVMODEA {
         } else {
             self.dmOrientation = nil
         }
-        
+
         /// dmPaperSize (2 bytes): For printers, the size of the output media. If the DM_PAPERSIZE bit is set in dmFields, this value MUST
         /// be specified. The value of this field SHOULD be one of the following, or it MAY be a device-specific value that is greater than or
         /// equal to 0x0100.
@@ -87,7 +87,7 @@ public struct DEVMODEA {
         } else {
             self.dmPaperSize = nil
         }
-        
+
         /// dmPaperLength (2 bytes): If the DM_PAPERLENGTH bit is set in the dmFields field, the value of this field specifies the length of
         /// the paper, in tenths of a millimeter, to use in the printer for which the job is destined.
         if self.dmFields.contains(.paperLength) {
@@ -95,7 +95,7 @@ public struct DEVMODEA {
         } else {
             self.dmPaperLength = nil
         }
-        
+
         /// dmPaperWidth (2 bytes): If the DM_PAPERWIDTH bit is set in the dmFields field, the value of this field specifies the width of the
         /// paper, in tenths of a millimeter, to use in the printer for which the job is destined.
         if self.dmFields.contains(.paperWidth) {
@@ -103,7 +103,7 @@ public struct DEVMODEA {
         } else {
             self.dmPaperWidth = nil
         }
-        
+
         /// dmScale (2 bytes): If the DM_SCALE bit is set in the dmFields field, the value of this field specifies the percentage factor by which
         /// the printed output is to be scaled.
         if self.dmFields.contains(.scale) {
@@ -111,7 +111,7 @@ public struct DEVMODEA {
         } else {
             self.dmScale = nil
         }
-        
+
         /// dmCopies (2 bytes): If the DM_COPIES bit is set in the dmFields field, the value of this field specifies the number of copies to be
         /// printed, if the device supports multiple-page copies.
         if self.dmFields.contains(.copies) {
@@ -119,7 +119,7 @@ public struct DEVMODEA {
         } else {
             self.dmCopies = nil
         }
-        
+
         /// dmDefaultSource (2 bytes): If the DM_DEFAULTSOURCE bit is set in the dmFields field, the value of this field specifies the paper
         /// source.
         if self.dmFields.contains(.defaultSource) {
@@ -127,7 +127,7 @@ public struct DEVMODEA {
         } else {
             self.dmDefaultSource = nil
         }
-        
+
         /// dmPrintQuality (2 bytes): If the DM_PRINTQUALITY bit is set in the dmFields field, the value of this field specifies the printer
         /// resolution. The value of this field MUST be either a positive value that specifies a device-dependent resolution in dots per inch (DPI)
         /// or one of the following four predefined device-independent values that are mapped to a device-specific resolution in an
@@ -137,7 +137,7 @@ public struct DEVMODEA {
         } else {
             self.dmPrintQuality = nil
         }
-        
+
         /// dmColor (2 bytes): If the DM_COLOR bit is set in the dmFields field, the value of this field specifies the color mode to use with color
         /// printers.
         if self.dmFields.contains(.color) {
@@ -145,7 +145,7 @@ public struct DEVMODEA {
         } else {
             self.dmColor = nil
         }
-        
+
         /// dmDuplex (2 bytes): If the DM_DUPLEX bit is set in the dmFields field, the value of this field specifies duplex or double-sided
         /// printing for printers that are capable of duplex printing.
         if self.dmFields.contains(.duplex) {
@@ -153,7 +153,7 @@ public struct DEVMODEA {
         } else {
             self.dmDuplex = nil
         }
-        
+
         /// dmYResolution (2 bytes): If the DM_YRESOLUTION bit is set in the dmFields, the value of this field specifies the y-resolution, in
         /// dots per inch, of the printer.
         if self.dmFields.contains(.yResolution) {
@@ -161,7 +161,7 @@ public struct DEVMODEA {
         } else {
             self.dmYResolution = nil
         }
-        
+
         /// dmTTOption (2 bytes): If the DM_TTOPTION bit is set in the dmFields field, the value of this field specifies how TrueType fonts
         /// MUST be printed.
         if self.dmFields.contains(.ttOption) {
@@ -169,7 +169,7 @@ public struct DEVMODEA {
         } else {
             self.dmTTOption = nil
         }
-        
+
         /// dmCollate (2 bytes): If the DM_COLLATE bit is set in the dmFields field, the value of this field specifies whether collation MUST be
         /// used when printing multiple copies.
         if self.dmFields.contains(.ttOption) {
@@ -177,16 +177,16 @@ public struct DEVMODEA {
         } else {
             self.dmCollate = nil
         }
-        
+
         /// reserved0 (2 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved0 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved1 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved1 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved2 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved2 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved3 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved3 = try dataStream.read(endianess: .littleEndian)
 
@@ -197,10 +197,10 @@ public struct DEVMODEA {
         } else {
             self.dmNup = nil
         }
-        
+
         /// reserved4 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved4 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// dmICMMethod (4 bytes): If the DM_ICMMETHOD bit is set in the dmFields field, the value of this field specifies how Image Color
         /// Management (ICM) is handled. For a non-ICM application, this field determines if ICM is enabled or disabled. For ICM applications,
         /// the system examines this field to determine how to handle ICM support. For values see [MS-RPRN]section 2.2.2.1.
@@ -209,7 +209,7 @@ public struct DEVMODEA {
         } else {
             self.dmICMMethod = nil
         }
-        
+
         /// dmICMIntent (4 bytes): If the DM_ICMINTENT bit is set in the dmFields field, the value of this field specifies which color matching
         /// method, or intent, MUST be used by default. This field is primarily for non-ICM applications. ICM applications can establish intents
         /// by using the ICM functions. For values see [MS-RPRN]section 2.2.2.1.
@@ -218,7 +218,7 @@ public struct DEVMODEA {
         } else {
             self.dmICMIntent = nil
         }
-        
+
         /// dmMediaType (4 bytes): If the DM_MEDIATYPE bit is set in the dmFields field, the value of this field specifies the type of media
         /// to print on. For values see [MS-RPRN]section 2.2.2.1.
         if self.dmFields.contains(.mediaType) {
@@ -226,7 +226,7 @@ public struct DEVMODEA {
         } else {
             self.dmMediaType = nil
         }
-        
+
         /// dmDitherType (4 bytes): If the DM_DITHERTYPE bit is set in the dmFields field, the value of this field specifies how dithering is to
         /// be done. For values see [MS-RPRN]section 2.2.2.1.
         if self.dmFields.contains(.ditherType) {
@@ -234,87 +234,87 @@ public struct DEVMODEA {
         } else {
             self.dmDitherType = nil
         }
-        
+
         /// reserved5 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved5 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved6 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved6 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved7 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved7 = try dataStream.read(endianess: .littleEndian)
-        
+
         /// reserved8 (4 bytes): A value that SHOULD be zero and MUST be ignored on receipt.
         self.reserved8 = try dataStream.read(endianess: .littleEndian)
     }
-    
+
     public struct Fields: OptionSet {
         public let rawValue: UInt32
-        
+
         public init(rawValue: UInt32) {
             self.rawValue = rawValue
         }
-        
+
         /// DM_ICMINTENT CI If this bit is set, the dmICMIntent field MUST be initialized.
         public static let icmIntent = Fields(rawValue: 1 << 0)
-        
+
         /// DM_MEDIATYPE MT If this bit is set, the dmMediaType field MUST be initialized.
         public static let mediaType = Fields(rawValue: 1 << 1)
-        
+
         /// DM_DITHERTYPE DT If this bit is set, the dmDitherType field MUST be initialized.
         public static let ditherType = Fields(rawValue: 1 << 2)
-        
+
         /// DM_FORMNAME FM If this bit is set, the dmFormName field MUST be initialized.
         public static let formName = Fields(rawValue: 1 << 8)
-        
+
         /// DM_ICMMETHOD CM If this bit is set, the dmICMMethod field MUST be initialized.
         public static let icmMethod = Fields(rawValue: 1 << 15)
-        
+
         /// DM_COPIES CP If this bit is set, the dmCopies field MUST be initialized.
         public static let copies = Fields(rawValue: 1 << 16)
-        
+
         /// DM_DEFAULTSOURCE DS If this bit is set, the dmDefaultSource field MUST be initialized.
         public static let defaultSource = Fields(rawValue: 1 << 17)
-        
+
         /// DM_PRINTQUALITY PQ If this bit is set, the dmPrintQuality field MUST be initialized.
         public static let printQuality = Fields(rawValue: 1 << 18)
-        
+
         /// DM_COLOR CR If this bit is set, the dmColor field MUST be initialized.
         public static let color = Fields(rawValue: 1 << 19)
-        
+
         /// DM_DUPLEX DX If this bit is set, the dmDuplex field MUST be initialized.
         public static let duplex = Fields(rawValue: 1 << 20)
-        
+
         /// DM_YRESOLUTION Y If this bit is set, the dmYResolution field MUST be initialized.
         public static let yResolution = Fields(rawValue: 1 << 21)
-        
+
         /// DM_TTOPTION TT If this bit is set, the dmTTOption field MUST be initialized.
         public static let ttOption = Fields(rawValue: 1 << 22)
-        
+
         /// DM_COLLATE CL If this bit is set, the dmCollate field MUST be initialized.
         public static let collate = Fields(rawValue: 1 << 23)
-        
+
         /// DM_ORIENTATION OR If this bit is set, the dmOrientation field MUST be initialized.
         public static let orientation = Fields(rawValue: 1 << 24)
-        
+
         /// DM_PAPERSIZE PS If this bit is set, the dmPaperSize field MUST be initialized. This bit MUST NOT be set if either
         /// DM_PAPERLENGTH or DM_PAPERWIDTH are set.
         public static let paperSize = Fields(rawValue: 1 << 25)
-        
+
         /// DM_PAPERLENGTH PL If this bit is set, the dmPaperLength field MUST be initialized. This bit MUST NOT be set if
         /// DM_PAPERSIZE is set.
         public static let paperLength = Fields(rawValue: 1 << 26)
-        
+
         /// DM_PAPERWIDTH PW If this bit is set, the dmPaperWidth field MUST be initialized. This bit MUST NOT be set if
         /// DM_PAPERSIZE is set.
         public static let paperWidth = Fields(rawValue: 1 << 27)
-        
+
         /// DM_SCALE SC If this bit is set, the dmScale field MUST be initialized.
         public static let scale = Fields(rawValue: 1 << 28)
-        
+
         /// DM_NUP UP If this bit is set, the dmNup field MUST be initialized.
         public static let nup = Fields(rawValue: 1 << 30)
-        
+
         static let all: Fields = [
             .icmIntent,
             .mediaType,
@@ -337,86 +337,86 @@ public struct DEVMODEA {
             .nup
         ]
     }
-    
+
     /// dmOrientation (2 bytes): For printers, the orientation for output. If the DM_ORIENTATION bit is set in dmFields, the value of this field
     /// SHOULD be one of the following.
     public enum Orientation: UInt16 {
         /// DMORIENT_POTRAIT 0x0001 "Portrait" orientation.
         case portrait = 0x0001
-    
+
         /// DMORIENT_LANDSCAPE 0x0002 "Landscape" orientation.
         case landscape = 0x0002
     }
-    
+
     /// dmPaperSize (2 bytes): For printers, the size of the output media. If the DM_PAPERSIZE bit is set in dmFields, the value of this field
     /// SHOULD<95> be one of the following, or it MAY be a devicespecific value that is greater than or equal to 0x0100.
     public enum PaperSize: UInt16 {
         /// DMPAPER_LETTER 0x0001 Letter, 8 1/2 x 11 inches
         case letter = 0x0001
-        
+
         /// DMPAPER_LEGAL 0x0005 Legal, 8 1/2 x 14 inches
         case legal = 0x0005
-        
+
         /// DMPAPER_10X14 0x0010 10 x 14-inch sheet
         case tenXFourteen = 0x0010
-        
+
         /// DMPAPER_11X17 0x0011 11 x 17-inch sheet
         case elevenXSeventeen = 0x0011
-        
+
         /// DMPAPER_12X11 0x005A 12 x 11-inch sheet
         case twelveXEleven = 0x005A
-        
+
         /// DMPAPER_A3 0x0008 A3 sheet, 297 x 420 millimeters
         case a3 = 0x0008
-        
+
         /// DMPAPER_A3_ROTATED 0x004C A3 rotated sheet, 420 x 297 millimeters
         case a3Rotated = 0x004C
-        
+
         /// DMPAPER_A4 0x0009 A4 sheet, 210 x 297 millimeters
         case a4 = 0x0009
-        
+
         /// DMPAPER_A4_ROTATED 0x004D A4 rotated sheet, 297 x 210 millimeters
         case a4Rotated = 0x004D
-        
+
         /// DMPAPER_A4SMALL 0x000A A4 small sheet, 210 x 297 millimeters
         case a4Small = 0x000A
-        
+
         /// DMPAPER_A5 0x000B A5 sheet, 148 x 210 millimeters
         case a5 = 0x000B
-        
+
         /// DMPAPER_A5_ROTATED 0x004E A5 rotated sheet, 210 x 148 millimeters
         case a5Rotated = 0x004E
-        
+
         /// DMPAPER_A6 0x0046 A6 sheet, 105 x 148 millimeters
         case a6 = 0x0046
-        
+
         /// DMPAPER_A6_ROTATED 0x0053 A6 rotated sheet, 148 x 105 millimeters
         case a6Rotated = 0x0053
-        
+
         /// DMPAPER_B4 0x000C B4 sheet, 250 x 354 millimeters
         case b4 = 0x000C
-        
+
         /// DMPAPER_B4_JIS_ROTATED 0x004F B4 (JIS) rotated sheet, 364 x 257 millimeters
         case b4JisRotated = 0x004F
-        
+
         /// DMPAPER_B5 0x000D B5 sheet, 182 x 257-millimeter paper
         case b5 = 0x000D
-        
+
         /// DMPAPER_B5_JIS_ROTATED 0x0050 B5 (JIS) rotated sheet, 257 x 182 millimeters
         case b5JisRotated = 0x0050
-        
+
         /// DMPAPER_B6_JIS 0x0058 B6 (JIS) sheet, 128 x 182 millimeters
         case b6Jis = 0x0058
-        
+
         /// DMPAPER_B6_JIS_ROTATED 0x0059 B6 (JIS) rotated sheet, 182 x 128 millimeters
         case b6JisRotated = 0x0059
-    
+
         /// DMPAPER_CSHEET 0x0018 C Sheet, 17 x 22 inches
         case cSheet = 0x0018
-        
+
         /// DMPAPER_DBL_JAPANESE_POSTCARD 0x0045 Double Japanese Postcard, 200 x 148 millimeters
         case dblJapanesePostcard = 0x0045
-        
+
         /// DMPAPER_DBL_JAPANESE_POSTCARD_ROTATED 0x0052 Double Japanese Postcard Rotated, 148 x 200 millimeters
         case dblJapanesePostcardRotated = 0x0052
 
@@ -624,7 +624,7 @@ public struct DEVMODEA {
         /// DMPAPER_TABLOID 0x0003 Tabloid, 11 x 17 inches
         case tabloid = 0x0003
     }
-    
+
     /// dmDefaultSource (2 bytes): If the DM_DEFAULTSOURCE bit is set in the dmFields field, this field specifies the paper source.
     /// The value of this field SHOULD be one of the following, or it MAY be a device-specific value that is greater than or equal to 0x0100
     public enum PaperSource: UInt16 {
@@ -667,84 +667,84 @@ public struct DEVMODEA {
         /// DMBIN_FORMSOURCE 0x000F Select the bin with the required form.
         case formSource = 0x000F
     }
-    
+
     /// dmPrintQuality (2 bytes): If the DM_PRINTQUALITY bit is set in the dmFields field, this field specifies the printer resolution. The value of
     /// this field MUST be either a positive value that specifies a device-dependent resolution in dots per inch (DPI) or one of the following four
     /// predefined device-independent values that are mapped to a device-specific resolution in an implementation-specific manner.
     public enum PrintQuality: UInt16 {
         /// DMRES_HIGH 0xFFFC High-resolution printouts
         case high = 0xFFFC
-        
+
         /// DMRES_MEDIUM 0xFFFD Medium-resolution printouts
         case medium = 0xFFFD
-        
+
         /// DMRES_LOW 0xFFFE Low-resolution printouts
         case low = 0xFFFE
-        
+
         /// DMRES_DRAFT 0xFFFF Draft-resolution printouts
         case draft = 0xFFFF
     }
-    
+
     /// dmColor (2 bytes): If the DM_COLOR bit is set in the dmFields field, this field specifies the color mode to use with color printers. The
     /// value of this field MUST be one of the following.
     public enum Color: UInt16 {
         /// DMRES_MONOCHROME 0x0001 Use monochrome printing mode.
         case monochrome = 0x0001
-    
+
         /// DMRES_COLOR 0x0002 Use color printing mode.
         case color = 0x0002
     }
-    
+
     /// dmDuplex (2 bytes): If the DM_DUPLEX bit is set in the dmFields field, this field specifies duplex or double-sided printing for printers that
     /// are capable of duplex printing. The value of this field MUST be one of the following.
     public enum Duplex: UInt16 {
         /// DMDUP_SIMPLEX 0x0001 Normal (non-duplex) printing.
         case simplex = 0x0001
-    
+
         /// DMDUP_VERTICAL 0x0002 Long-edge binding; that is, the long edge of the page is vertical.
         case vertical = 0x0002
-        
+
         /// DMDUP_HORIZONTAL 0x0003 Short-edge binding; that is, the long edge of the page is horizontal.
         case horizontal = 0x0003
     }
-    
+
     /// dmTTOption (2 bytes): If the DM_TTOPTION bit is set in the dmFields field, this field specifies how TrueType fonts MUST be printed.
     /// The value of this field MUST be one of the following.
     public enum TTOption: UInt16 {
         /// DMTT_BITMAP 0x0001 Prints TrueType fonts as graphics. This is the default action for dot-matrix printers.
         case bitmap = 0x0001
-        
+
         /// DMTT_DOWNLOAD 0x0002 Downloads TrueType fonts as soft fonts. This is the default action for Hewlett-Packard printers that
         /// use printer control language (PCL).
         case download = 0x0002
-        
+
         /// DMTT_SUBDEV 0x0003 Substitutes device fonts for TrueType fonts. This is the default action for PostScript printers.
         case subDev = 0x0003
-        
+
         /// DMTT_DOWNLOAD_OUTLINE 0x0004 Downloads TrueType fonts as outline soft fonts.<96>
         case downloadOutline = 0x0004
     }
-    
+
     /// dmCollate (2 bytes): If the DM_COLLATE bit is set in the dmFields field, this field specifies whether collation is used when printing multiple
     /// copies. The value of this field is one of the following:
     public enum Collate: UInt16 {
         /// DMCOLLATE_FALSE 0x0000 Do not collate when printing multiple copies.
         case `false` = 0x0000
-        
+
         /// DMCOLLATE_TRUE 0x0001 Collate when printing multiple copies.
         case `true` = 0x0001
     }
-    
+
     /// dmNup (4 bytes): If the DM_NUP bit is set in the dmFields, this field specifies the responsibility for performing page layout for N-Up
     /// Printing. It is one of the following values:
     public enum Nup: UInt16 {
         /// DMNUP_SYSTEM 0x00000001 The print server does the page layout.
         case system = 0x00000001
-        
+
         /// DMNUP_ONEUP 0x00000002 The application does the page layout.
         case oneUp = 0x00000002
     }
-    
+
     /// dmICMMethod (4 bytes): If the DM_ICMMETHOD bit is set in the dmFields field, this field specifies how Image Color Management (ICM)
     /// is handled. For a non-ICM application, this field determines if ICM is enabled or disabled. For ICM applications, the system examines
     /// this field to determine how to handle ICM support. The value of this field is one of the following predefined values or a printer driver-defined
@@ -752,49 +752,49 @@ public struct DEVMODEA {
     public enum ICMMethod: UInt32 {
         /// DMICMMETHOD_NONE 0x00000001 Specifies that ICM is disabled.
         case none = 0x00000001
-        
+
         /// DMICMMETHOD_SYSTEM 0x00000002 Specifies that ICM is handled by the system on which the page description language (PDL)
         /// data is generated.
         case system = 0x00000002
-        
+
         /// DMICMMETHOD_DRIVER 0x00000003 Specifies that ICM is handled by the printer driver.
         case driver = 0x00000003
-        
+
         /// DMICMMETHOD_DEVICE 0x00000004 Specifies that ICM is handled by the destination device.
         case device = 0x00000004
     }
-    
+
     /// dmICMIntent (4 bytes): If the DM_ICMINTENT bit is set in the dmFields field, this field specifies which color matching method, or intent,
     /// is used by default. This field is primarily for non-ICM applications. ICM applications can establish intents by using the ICM functions.
     /// The value of this field is one of the following predefined values, or a printer driver defined value greater than or equal to 0x00000100.
     public enum ICMIntent: UInt32 {
         /// DMICM_SATURATE 0x00000001 Color matching SHOULD be optimized for color saturation.
         case saturate = 0x00000001
-        
+
         /// DMICM_CONTRAST 0x00000002 Color matching SHOULD optimize for color contrast.
         case contrast = 0x00000002
-        
+
         /// DMICM_COLORIMETRIC 0x00000003 Color matching SHOULD optimize to match the exact color requested.
         case colorIMetric = 0x00000003
-        
+
         /// DMICM_ABS_COLORIMETRIC 0x00000004 Color matching SHOULD optimize to match the exact color requested without white
         /// point mapping.
         case absColorIMetric = 0x00000004
     }
-    
+
     /// dmMediaType (4 bytes): If the DM_MEDIATYPE bit is set in the dmFields field, this field specifies the type of media to print on. The value
     /// of this field is one of the following predefined values or else a printer driver-defined value greater than or equal to 0x00000100.
     public enum MediaType: UInt32 {
         /// DMMEDIA_STANDARD 0x00000001 Plain paper
         case standard = 0x00000001
-        
+
         /// DMMEDIA_TRANSPARENCY 0x00000002 Transparent film
         case transparency = 0x00000002
-        
+
         /// DMMEDIA_GLOSSY 0x00000003 Glossy paper
         case glossy = 0x00000003
     }
-    
+
     /// dmDitherType (4 bytes): If the DM_DITHERTYPE bit is set in the dmFields field, this field specifies how dithering is to be done. The value
     /// of this field is one of the following predefined values or else a printer driver-defined value greater than or equal to 0x00000100.
     public enum DitherType: UInt32 {
@@ -819,10 +819,10 @@ public struct DEVMODEA {
 
         /// DMDITHER_RESERVED7 Same as DMDITHER_LINEART. 0x00000007
         case reserved7 = 0x00000007
-        
+
         /// DMDITHER_RESERVED8 0x00000008 Same as DMDITHER_LINEART.
         case reserved8 = 0x00000008
-        
+
         /// DMDITHER_RESERVED9 0x00000009 Same as DMDITHER_LINEART.
         case reserved9 = 0x00000009
 

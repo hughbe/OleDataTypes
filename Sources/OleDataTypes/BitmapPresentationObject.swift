@@ -6,7 +6,7 @@
 //
 
 import DataStream
-import MetafileReader
+import WmfReader
 
 /// [MS-OLEDS] 2.2.2.2 BitmapPresentationObject
 /// The BitmapPresentationObject structure specifies a presentation data type that is used to display linked objects or embedded objects in
